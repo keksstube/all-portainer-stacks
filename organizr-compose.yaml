@@ -1,0 +1,20 @@
+version: "3.6"
+
+services:
+  organizr:
+    container_name: organizr
+    hostname: organizr
+    image: organizr/organizr:latest
+    restart: unless-stopped
+    ports:
+      - "1122:80"  # External port 1122 → internal port 80
+    volumes:
+      - organizr_config:/config  # Persistent volume
+    environment:
+      - PUID=1000          # Change to your user ID (run 'id -u')
+      - PGID=1000          # Change to your group ID (run 'id -g')
+      - TZ=Europe/Berlin   # Change to your timezone
+
+volumes:
+  organizr_config:
+    driver: local

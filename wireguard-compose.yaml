@@ -1,0 +1,62 @@
+version: "3.6"
+services:
+  wireguard:
+    image: lscr.io/linuxserver/wireguard:latest
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - SERVERURL=auto
+      - SERVERPORT=51820
+      - PEERS=CookieMonster,Bob,Torf,TorfPi,BobPi,Zombey,Yuma,Gast1
+      - PEERDNS=1.1.1.2,1.0.0.2
+      - ALLOWEDIPS=0.0.0.0/0
+    volumes:
+      - /opt/wireguard/config:/config
+      - /lib/modules:/lib/modules
+    ports:
+        - "18765:18765/tcp"
+        - "19132:19132/tcp"
+        - "19132:19132/udp"
+        - "222:222/tcp"
+        - "2305:2305/udp"
+        - "24444:24444/tcp"
+        - "2456:2456/udp"
+        - "2457:2457/udp"
+        - "2458:2458/udp"
+        - "25565:25565/tcp"
+        - "25566:25566/tcp"
+        - "25566:25566/udp"
+        - "25569:25569/tcp"
+        - "25585:25585/tcp"
+        - "25586:25586/tcp"
+        - "27015:27015/tcp"
+        - "27016:27016/udp"
+        - "30814:30814/tcp"
+        - "30814:30814/udp"
+        - "33344:33344/tcp"
+        - "51820:51820/udp"
+        - "54321:54321/tcp"
+        - "54321:54321/udp"
+        - "5657:5657/tcp"
+        - "7443:7443/tcp"
+        - "7456:7456/tcp"
+        - "7800:7800/tcp"
+        - "7801:7801/tcp"
+        - "7802:7802/tcp"
+        - "8000:8000/tcp"
+        - "9002:9002/tcp"
+        - "9090:9090/tcp"
+        - "9091:9091/tcp"
+        - "9885:9885/tcp"
+        - "9886:9886/tcp"
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv4.ip_forward=1
+    restart: unless-stopped
+
+    command: /bin/bash -c "/config/iptables.sh && tail -f /dev/null"

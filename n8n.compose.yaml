@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:next
+    container_name: n8n
+    restart: unless-stopped
+
+    ports:
+      - "5678:5678"
+
+    environment:
+      - TZ=Europe/Berlin
+      - N8N_PORT=5678
+      - N8N_EDITOR_BASE_URL=https://n8n.keksgames.de
+      - N8N_PROTOCOL=https
+      - GENERIC_TIMEZONE=Europe/Berlin
+      - N8N_SECURE_COOKIE=FALSE
+      # add other env vars here if you had them before (e.g. DB, WEBHOOK_URL, etc.)
+
+    volumes:
+      - n8n_n8n_data:/home/node/.n8n
+
+networks:
+  n8n_default:
+    driver: bridge
+
+volumes:
+  n8n_n8n_data:
+    external: true

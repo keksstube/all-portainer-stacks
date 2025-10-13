@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    container_name: uptime-kuma
+    restart: always
+
+    ports:
+      - "5556:3001"
+
+    environment:
+      - TZ=Europe/Berlin
+      - FORCE_HTTPS=true
+      - VIRTUAL_HOST=uptime.keksgames.de
+      - UPTIME_KUMA_IS_CONTAINER=1
+
+    volumes:
+      - uptime-kuma_uptime-kuma-data:/app/data
+
+    entrypoint: ["/usr/bin/dumb-init", "--", "extra/entrypoint.sh"]
+    command: ["node", "server/server.js"]
+
+networks:
+  uptime-kuma_default:
+    driver: bridge
+
+volumes:
+  uptime-kuma_uptime-kuma-data:
+    external: true
