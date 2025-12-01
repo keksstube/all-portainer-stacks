@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  tonieverwaltung-backend:
+    build: .
+    container_name: tonie-backend
+    environment:
+      SSH_PRIVATE_KEY: "${SSH_PRIVATE_KEY}"
+    ports:
+      - "8686:8686"
+    restart: unless-stopped
